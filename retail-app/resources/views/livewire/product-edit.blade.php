@@ -1,0 +1,53 @@
+<div class="p-6 min-h-screen">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-white">Editar Produto</h2>
+
+        <a href="{{ route('products.index') }}" class="text-gray-300 hover:text-white flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Voltar
+        </a>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
+        <form wire:submit.prevent="update" class="space-y-5">
+            <div>
+                <label class="block text-gray-300 font-medium mb-2">Nome</label>
+                <input wire:model="name" type="text" placeholder="Nome do produto"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div class="grid grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-gray-300 font-medium mb-2">Preço (R$)</label>
+                    <input wire:model="price" type="number" step="0.01" placeholder="0,00"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-gray-300 font-medium mb-2">Estoque</label>
+                    <input wire:model="stock" type="number" placeholder="Quantidade"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-gray-300 font-medium mb-2">Descrição</label>
+                <textarea wire:model="description" rows="4" placeholder="Descrição do produto"
+                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+            </div>
+
+            <div class="flex justify-end gap-4 pt-4">
+                <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center gap-2 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    Atualizar
+                </button>
+                <a href="{{ route('products.index') }}" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
