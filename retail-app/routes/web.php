@@ -11,6 +11,10 @@ use App\Livewire\CustomerIndex;
 use App\Livewire\CustomerCreate;
 use App\Livewire\CustomerEdit;
 
+use App\Livewire\SaleIndex;
+use App\Livewire\SaleCreate;
+use App\Livewire\SaleEdit;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -34,5 +38,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/customers/create', CustomerCreate::class)->name('customers.create');
     Route::get('/customers/edit/{id}', CustomerEdit::class)->name('customers.edit');
 });
+
+Route::get('/sales', SaleIndex::class)->name('sales.index');
+Route::get('/sales/create', SaleCreate::class)->name('sales.create');
+Route::get('/sales/edit/{id}', SaleEdit::class)->name('sales.edit');
 
 require __DIR__.'/auth.php';
