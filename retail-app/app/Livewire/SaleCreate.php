@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\Customer;
 use App\Models\Product;
 use Livewire\Component;
+use App\Services\BlockchainService;
 
 class SaleCreate extends Component
 {
@@ -73,37 +74,40 @@ class SaleCreate extends Component
         }
     }
 
-    public function save(){
-        $this->validate([
-            'customer_id' => 'required|exists:customers,_id',
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|exists:products,_id',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.price' => 'required|numeric|min:0',
-            'total' => 'required|numeric|min:0',
-            'status' => 'required|in:pendente,pago,cancelado',
-        ]);
+    public function save(BlockchainService $blockchain)
+{
+    $this->validate([
+        'customer_id' => 'required|exists:customers,_id',
+        'items' => 'required|array|min:1',
+        'items.*.product_id' => 'required|exists:products,_id',
+        'items.*.quantity' => 'required|integer|min:1',
+        'items.*.price' => 'required|numeric|min:0',
+        'total' => 'required|numeric|min:0',
+        'status' => 'required|in:pendente,pago,cancelado',
+    ]);
 
-        $itemsArray = collect($this->items)->map(function ($item) {
-            return [
-                'product_id' => $item['product_id'],
-                'product_name' => Product::find($item['product_id'])->name,
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'subtotal' => $item['quantity'] * $item['price']
-            ];
-        })->toArray();
+    $itemsArray = collect($this->items)->map(function ($item) {
+        return [
+            'product_id' => $item['product_id'],
+            'product_name' => Product::find($item['product_id'])->name,
+            'quantity' => $item['quantity'],
+            'price' => $item['price'],
+            'subtotal' => $item['quantity'] * $item['price']
+        ];
+    })->toArray();
 
-        Sale::create([
-            'customer_id' => $this->customer_id,
-            'items' => $itemsArray,
-            'total' => $this->total,
-            'status' => $this->status,
-        ]);
+    $sale = Sale::create([
+        'customer_id' => $this->customer_id,
+        'items' => $itemsArray,
+        'total' => $this->total,
+        'status' => $this->status,
+    ]);
 
-        session()->flash('message', 'Venda registrada com sucesso!');
-        return redirect()->route('sales.index');
-    }
+    app(\App\Services\BlockchainService::class)->registerSale($sale);
+
+    session()->flash('message', 'Venda registrada no sistema e na blockchain!');
+    return redirect()->route('sales.index');
+}
 
     public function render()
     {

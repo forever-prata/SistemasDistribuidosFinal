@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  ganache:
+    image: trufflesuite/ganache
+    ports:
+      - "8545:8545"
+    command: ["--chain.chainId", "1337", "--wallet.totalAccounts", "10", "--wallet.defaultBalance", "1000"]
